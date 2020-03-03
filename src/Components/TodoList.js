@@ -1,35 +1,31 @@
-import React, { useState } from "react";
-let counter = 0;
-let todo = { id: 1, title: "string" };
+import React, { useState,useEffect } from "react";
+import Strike from "./TodoList.css";
 
+let counter = 1;
 let TodoList = () => {
-  const [state, setState] = useState("");
-  const items = [{ id: counter, value: state }];
+  const [state, setState] = useState(null);
+  const items = [];
   const [list, setList] = useState(items);
-  const [color, setColor] = useState("yellow");
 
   let handlechange = e => {
-    setState({ id: counter, value: e.target.value });
+    setState(e.target.value);
   };
 
   let addItem = e => {
-    counter++;
+    console.log("state", state);
     if (state) {
-      setList(list.concat(state));
+      setList([...list,{id:counter++,value:state,completed:false}]);
     }
     e.preventDefault();
     console.log(list);
   };
 
-  let btnClass = color === "yellow" ? "yellow" : "Item";
-
-  let oncolorChange = itemId => {
-    console.log("Inside button click");
-    list.map(id => {
-      console.log(id);
-      console.log(itemId);
-      // id === itemId ? setColor("") : null;
-    });
+  // ({ id: counter, value: state, completed:!prevState.completed})
+  let toggleBox = (itemId) => {
+    console.log(itemId);
+      list.map((itemsId)=> {if(
+        itemsId.id===itemId){itemsId.completed=true}});
+        setList((prevsate)=>[...prevsate]);
   };
 
   return (
@@ -39,10 +35,10 @@ let TodoList = () => {
         <button>Add item</button>
       </form>
       <ul>
-        {list.map(item => (
-          <li key={item.id} className={btnClass}>
+        {list.map((item,index) => (
+          <li key={index} className={item.completed? "Strikecompleted": "Strike"} onClick={()=>toggleBox(index)}>
             {item.value} <br />
-            <button onClick={oncolorChange(item.id)}>Completed</button>
+            <button>Completed</button>
           </li>
         ))}
       </ul>
